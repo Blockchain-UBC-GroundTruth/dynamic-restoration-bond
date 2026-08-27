@@ -48,7 +48,13 @@ As Regulator, open the active case, sign the resolution, append the linked corre
 
 ### Devnet publish
 
-Fund `.demo-wallets/deployer.json` with enough Devnet SOL for the program-data account and demo transactions, then run:
+Fund the demo deployer below with about 5 Devnet SOL from a faucet. Devnet SOL has no real value; never send Mainnet SOL or exchange assets to this address.
+
+```text
+42v28zkAxL1dN23dtrXiDX1WibvfpfHnsPV19NihDCLH
+```
+
+Then run:
 
 ```bash
 npm run anchor:build

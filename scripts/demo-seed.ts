@@ -51,16 +51,19 @@ async function ensureFunding() {
     await conn.confirmTransaction({ signature, ...latest }, 'confirmed');
     balance = await conn.getBalance(deployer.publicKey);
   }
-  if (balance < 2 * LAMPORTS_PER_SOL) {
-    throw new Error(`Demo deployer ${deployer.publicKey.toBase58()} needs Devnet SOL before seeding.`);
+  const minimumDeployerBalance = cluster === 'localnet' ? 2 : 1.2;
+  if (balance < minimumDeployerBalance * LAMPORTS_PER_SOL) {
+    throw new Error(`Demo deployer ${deployer.publicKey.toBase58()} needs at least ${minimumDeployerBalance} SOL on ${cluster} before seeding.`);
   }
 
+  const minimumRoleBalance = cluster === 'localnet' ? 0.4 : 0.08;
+  const roleFundingAmount = cluster === 'localnet' ? 0.8 : 0.15;
   for (const role of [company, auditor, regulator, community]) {
-    if ((await conn.getBalance(role.publicKey)) < 0.4 * LAMPORTS_PER_SOL) {
+    if ((await conn.getBalance(role.publicKey)) < minimumRoleBalance * LAMPORTS_PER_SOL) {
       const transaction = new Transaction().add(SystemProgram.transfer({
         fromPubkey: deployer.publicKey,
         toPubkey: role.publicKey,
-        lamports: 0.8 * LAMPORTS_PER_SOL,
+        lamports: roleFundingAmount * LAMPORTS_PER_SOL,
       }));
       await sendAndConfirmTransaction(conn, transaction, [deployer], { commitment: 'confirmed' });
     }
