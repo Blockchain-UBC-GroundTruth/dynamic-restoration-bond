@@ -9,4 +9,12 @@
 7. Release the bond after all guards turn green.
 8. Explain that the production instruction repeats every check on-chain and uses the vault's actual SPL balance.
 
-For the interactive prototype, click the wallet control to cycle roles. Only the Regulator role can record the resolution.
+## Presenter preparation
+
+1. Start the local validator, deploy, and seed using the commands in `README.md`.
+2. Run `npm run demo:regulator-key` locally and import the printed demo-only private key into Phantom.
+3. Open the local Vinext URL and connect Phantom. The role chip must display `Regulator`.
+4. Confirm the green sync strip shows an on-chain event sequence and the project begins with one active dispute.
+5. Keep `npm run demo:advance -- all` available as a CLI fallback; it executes the same three regulator instructions.
+
+Each successful browser action displays a transaction link. On localnet the link uses Explorer's custom-cluster URL; after Devnet deployment it automatically uses `cluster=devnet`.

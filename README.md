@@ -4,15 +4,16 @@ GroundTruth is a Solana-based environmental liability ledger for restoration pro
 
 ## What is implemented
 
-- Responsive GroundTruth project dashboard with role switching and a complete interactive demo flow.
+- Responsive GroundTruth project dashboard with Phantom wallet connection, role detection, live account loading, Explorer links, and signed regulator actions.
 - Anchor program for project creation, evidence submission/rejection/resubmission/verification, liability proposals and decisions, bond deposit, community disputes, regulator resolution, linked liability corrections/reaffirmations, and guarded bond release.
 - PDA-owned legacy SPL Token vault with actual token-account balance checks at release time.
 - Atomic dispute counter and bond pause updates.
 - Project-scoped event sequencing and material transition events.
 - Release guard tests for active disputes, outstanding corrections, stale revisions, insufficient funding, and the valid release path.
-- Generated Anchor IDL and deployable SBF artifact.
+- Reproducible local-validator seed scripts that create four role wallets, a zero-decimal GTB mint, evidence history, approved liability, funded vault, and active community dispute.
+- Generated Anchor IDL and an SBPF v3 deployable artifact compatible with Solana/Agave 4.x.
 
-The current website uses a deterministic in-browser scenario so the product flow can be reviewed without a wallet. The Anchor program is built and ready for local-validator integration. Phantom, Supabase Storage, live account loading, and Devnet deployment are the next integration slice.
+The dashboard reads `public/demo-config.json`, loads the authoritative project and bond accounts, and derives its stage from on-chain counters and bond status. The remaining three presentation actions are real transactions signed by the configured Regulator account: resolve the dispute, append the required correction, and release the bond.
 
 ## Local development
 
@@ -23,7 +24,39 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`. Click the connected-wallet control to cycle through the four demo roles. As Regulator, open the active case and record its resolution, append the required correction, then release the bond after every guard passes.
+### Rebuild a local on-chain demo
+
+Run these in separate terminals:
+
+```bash
+# Terminal 1
+npm run demo:keys
+npm run demo:validator
+
+# Terminal 2, after the validator starts
+npm run demo:fund:local
+npm run anchor:build
+npm run demo:deploy:local
+npm run demo:seed
+npm run demo:status
+npm run dev
+```
+
+Open the local URL printed by Vinext. Run `npm run demo:regulator-key`, import that demo-only private key into Phantom, and connect it. Never put real SOL or assets in a generated demo wallet.
+
+As Regulator, open the active case, sign the resolution, append the linked correction, and release the bond after every guard passes. To verify the same path without Phantom, run `npm run demo:advance -- all`. Run `npm run demo:seed` again to create a fresh project in the disputed starting state.
+
+### Devnet publish
+
+Fund `.demo-wallets/deployer.json` with enough Devnet SOL for the program-data account and demo transactions, then run:
+
+```bash
+npm run anchor:build
+npm run demo:deploy:devnet
+GROUNDTRUTH_RPC_URL=https://api.devnet.solana.com npm run demo:seed
+```
+
+The public config contains only public addresses and evidence references. All role and deployer secret keys remain under the gitignored `.demo-wallets/` directory.
 
 ## Checks
 
@@ -32,7 +65,8 @@ npm run typecheck
 npm run lint
 npm run build
 cargo test --workspace
-anchor build
+npm run anchor:build
+npm run demo:status
 ```
 
 ## Program identity

@@ -1,0 +1,3217 @@
+{
+  "address": "E33zGy2Sb8qYU4uRMzH59EqCq6Ut75oj8DjUMeTtLXvQ",
+  "metadata": {
+    "name": "restoration_bond",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "GroundTruth dynamic restoration bond and environmental liability ledger"
+  },
+  "instructions": [
+    {
+      "name": "append_liability_correction",
+      "discriminator": [
+        148,
+        81,
+        112,
+        84,
+        35,
+        208,
+        230,
+        84
+      ],
+      "accounts": [
+        {
+          "name": "project",
+          "writable": true,
+          "relations": [
+            "target_decision",
+            "resolution",
+            "bond"
+          ]
+        },
+        {
+          "name": "regulator",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "project"
+          ]
+        },
+        {
+          "name": "target_decision"
+        },
+        {
+          "name": "resolution",
+          "writable": true
+        },
+        {
+          "name": "correction",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  114,
+                  114,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "project"
+              },
+              {
+                "kind": "account",
+                "path": "project.correction_count",
+                "account": "Project"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bond",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "project"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "correction_type",
+          "type": {
+            "defined": {
+              "name": "CorrectionType"
+            }
+          }
+        },
+        {
+          "name": "reason",
+          "type": "string"
+        },
+        {
+          "name": "supporting_hash",
+          "type": {
+            "option": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        },
+        {
+          "name": "supporting_uri",
+          "type": {
+            "option": "string"
+          }
+        },
+        {
+          "name": "corrected_amount",
+          "type": {
+            "option": "u64"
+          }
+        },
+        {
+          "name": "expected_correction_head",
+          "type": {
+            "option": "pubkey"
+          }
+        }
+      ]
+    },
+    {
+      "name": "approve_liability_change",
+      "discriminator": [
+        150,
+        15,
+        55,
+        138,
+        60,
+        96,
+        138,
+        196
+      ],
+      "accounts": [
+        {
+          "name": "project",
+          "writable": true,
+          "relations": [
+            "proposal",
+            "evidence",
+            "bond"
+          ]
+        },
+        {
+          "name": "regulator",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "project"
+          ]
+        },
+        {
+          "name": "proposal"
+        },
+        {
+          "name": "evidence"
+        },
+        {
+          "name": "decision",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  97,
+                  98,
+                  105,
+                  108,
+                  105,
+                  116,
+                  121,
+                  95,
+                  100,
+                  101,
+                  99,
+                  105,
+                  115,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "proposal"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bond",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "project"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "reason",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "create_project",
+      "discriminator": [
+        148,
+        219,
+        181,
+        42,
+        221,
+        114,
+        145,
+        190
+      ],
+      "accounts": [
+        {
+          "name": "company",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "project",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  106,
+                  101,
+                  99,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "company"
+              },
+              {
+                "kind": "arg",
+                "path": "project_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bond",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "project"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "bond"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "project_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "auditor",
+          "type": "pubkey"
+        },
+        {
+          "name": "regulator",
+          "type": "pubkey"
+        },
+        {
+          "name": "community_authority",
+          "type": "pubkey"
+        },
+        {
+          "name": "financial_observer",
+          "type": {
+            "option": "pubkey"
+          }
+        },
+        {
+          "name": "metadata_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "metadata_uri",
+          "type": "string"
+        },
+        {
+          "name": "release_recipient",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "deposit_bond",
+      "discriminator": [
+        120,
+        89,
+        18,
+        253,
+        112,
+        125,
+        87,
+        255
+      ],
+      "accounts": [
+        {
+          "name": "project",
+          "writable": true,
+          "relations": [
+            "bond"
+          ]
+        },
+        {
+          "name": "company",
+          "signer": true,
+          "relations": [
+            "project"
+          ]
+        },
+        {
+          "name": "bond",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "project"
+              }
+            ]
+          }
+        },
+        {
+          "name": "company_token",
+          "writable": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "relations": [
+            "bond"
+          ]
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "open_dispute",
+      "discriminator": [
+        137,
+        25,
+        99,
+        119,
+        23,
+        223,
+        161,
+        42
+      ],
+      "accounts": [
+        {
+          "name": "project",
+          "writable": true,
+          "relations": [
+            "target_decision",
+            "bond"
+          ]
+        },
+        {
+          "name": "community_authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "project"
+          ]
+        },
+        {
+          "name": "target_decision"
+        },
+        {
+          "name": "dispute",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  115,
+                  112,
+                  117,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "project"
+              },
+              {
+                "kind": "account",
+                "path": "project.dispute_count",
+                "account": "Project"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bond",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "project"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "reason",
+          "type": "string"
+        },
+        {
+          "name": "supporting_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "supporting_uri",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "propose_liability_change",
+      "discriminator": [
+        153,
+        173,
+        143,
+        10,
+        221,
+        214,
+        85,
+        76
+      ],
+      "accounts": [
+        {
+          "name": "project",
+          "writable": true,
+          "relations": [
+            "evidence"
+          ]
+        },
+        {
+          "name": "company",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "project"
+          ]
+        },
+        {
+          "name": "evidence"
+        },
+        {
+          "name": "proposal",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  97,
+                  98,
+                  105,
+                  108,
+                  105,
+                  116,
+                  121,
+                  95,
+                  112,
+                  114,
+                  111,
+                  112,
+                  111,
+                  115,
+                  97,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "project"
+              },
+              {
+                "kind": "account",
+                "path": "project.liability_proposal_count",
+                "account": "Project"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "proposed_amount",
+          "type": "u64"
+        },
+        {
+          "name": "currency_code",
+          "type": {
+            "array": [
+              "u8",
+              8
+            ]
+          }
+        },
+        {
+          "name": "rationale_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "rationale_uri",
+          "type": "string"
+        },
+        {
+          "name": "previous_proposal",
+          "type": {
+            "option": "pubkey"
+          }
+        }
+      ]
+    },
+    {
+      "name": "reject_evidence",
+      "discriminator": [
+        121,
+        151,
+        8,
+        129,
+        54,
+        165,
+        52,
+        114
+      ],
+      "accounts": [
+        {
+          "name": "project",
+          "writable": true,
+          "relations": [
+            "evidence"
+          ]
+        },
+        {
+          "name": "auditor",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "project"
+          ]
+        },
+        {
+          "name": "evidence",
+          "writable": true
+        },
+        {
+          "name": "decision",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  101,
+                  114,
+                  105,
+                  102,
+                  105,
+                  99,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "evidence"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "reason",
+          "type": "string"
+        },
+        {
+          "name": "supporting_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "supporting_uri",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "reject_liability_change",
+      "discriminator": [
+        29,
+        24,
+        72,
+        80,
+        195,
+        93,
+        243,
+        223
+      ],
+      "accounts": [
+        {
+          "name": "project",
+          "writable": true,
+          "relations": [
+            "proposal"
+          ]
+        },
+        {
+          "name": "regulator",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "project"
+          ]
+        },
+        {
+          "name": "proposal"
+        },
+        {
+          "name": "decision",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  97,
+                  98,
+                  105,
+                  108,
+                  105,
+                  116,
+                  121,
+                  95,
+                  100,
+                  101,
+                  99,
+                  105,
+                  115,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "proposal"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "reason",
+          "type": "string"
+        },
+        {
+          "name": "supporting_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "supporting_uri",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "release_bond",
+      "discriminator": [
+        15,
+        50,
+        71,
+        19,
+        101,
+        191,
+        81,
+        142
+      ],
+      "accounts": [
+        {
+          "name": "project",
+          "writable": true,
+          "relations": [
+            "latest_decision",
+            "bond"
+          ]
+        },
+        {
+          "name": "regulator",
+          "signer": true,
+          "relations": [
+            "project"
+          ]
+        },
+        {
+          "name": "latest_decision"
+        },
+        {
+          "name": "bond",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "project"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "relations": [
+            "bond"
+          ]
+        },
+        {
+          "name": "recipient_token",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "resolve_dispute",
+      "discriminator": [
+        231,
+        6,
+        202,
+        6,
+        96,
+        103,
+        12,
+        230
+      ],
+      "accounts": [
+        {
+          "name": "project",
+          "writable": true,
+          "relations": [
+            "dispute",
+            "bond"
+          ]
+        },
+        {
+          "name": "regulator",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "project"
+          ]
+        },
+        {
+          "name": "dispute",
+          "writable": true
+        },
+        {
+          "name": "resolution",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  115,
+                  111,
+                  108,
+                  117,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "dispute"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bond",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "project"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "outcome",
+          "type": {
+            "defined": {
+              "name": "ResolutionOutcome"
+            }
+          }
+        },
+        {
+          "name": "reason",
+          "type": "string"
+        },
+        {
+          "name": "supporting_hash",
+          "type": {
+            "option": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        },
+        {
+          "name": "supporting_uri",
+          "type": {
+            "option": "string"
+          }
+        },
+        {
+          "name": "requires_correction",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "resubmit_evidence",
+      "discriminator": [
+        253,
+        69,
+        12,
+        131,
+        78,
+        33,
+        63,
+        195
+      ],
+      "accounts": [
+        {
+          "name": "project",
+          "writable": true,
+          "relations": [
+            "previous_evidence"
+          ]
+        },
+        {
+          "name": "company",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "project"
+          ]
+        },
+        {
+          "name": "previous_evidence"
+        },
+        {
+          "name": "evidence",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  118,
+                  105,
+                  100,
+                  101,
+                  110,
+                  99,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "project"
+              },
+              {
+                "kind": "account",
+                "path": "project.evidence_count",
+                "account": "Project"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "content_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "storage_uri",
+          "type": "string"
+        },
+        {
+          "name": "evidence_type",
+          "type": "string"
+        },
+        {
+          "name": "metadata_uri",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "submit_evidence",
+      "discriminator": [
+        12,
+        169,
+        228,
+        194,
+        229,
+        31,
+        44,
+        39
+      ],
+      "accounts": [
+        {
+          "name": "project",
+          "writable": true
+        },
+        {
+          "name": "company",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "project"
+          ]
+        },
+        {
+          "name": "evidence",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  118,
+                  105,
+                  100,
+                  101,
+                  110,
+                  99,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "project"
+              },
+              {
+                "kind": "account",
+                "path": "project.evidence_count",
+                "account": "Project"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "content_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "storage_uri",
+          "type": "string"
+        },
+        {
+          "name": "evidence_type",
+          "type": "string"
+        },
+        {
+          "name": "metadata_uri",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "verify_evidence",
+      "discriminator": [
+        41,
+        242,
+        99,
+        213,
+        185,
+        46,
+        83,
+        227
+      ],
+      "accounts": [
+        {
+          "name": "project",
+          "writable": true,
+          "relations": [
+            "evidence"
+          ]
+        },
+        {
+          "name": "auditor",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "project"
+          ]
+        },
+        {
+          "name": "evidence",
+          "writable": true
+        },
+        {
+          "name": "decision",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  101,
+                  114,
+                  105,
+                  102,
+                  105,
+                  99,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "evidence"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "BondEscrow",
+      "discriminator": [
+        182,
+        117,
+        23,
+        95,
+        149,
+        75,
+        177,
+        19
+      ]
+    },
+    {
+      "name": "CorrectionRecord",
+      "discriminator": [
+        82,
+        21,
+        159,
+        31,
+        95,
+        177,
+        252,
+        10
+      ]
+    },
+    {
+      "name": "DisputeRecord",
+      "discriminator": [
+        198,
+        199,
+        79,
+        209,
+        12,
+        215,
+        34,
+        47
+      ]
+    },
+    {
+      "name": "DisputeResolution",
+      "discriminator": [
+        196,
+        214,
+        227,
+        32,
+        120,
+        229,
+        179,
+        46
+      ]
+    },
+    {
+      "name": "EvidenceRecord",
+      "discriminator": [
+        221,
+        242,
+        76,
+        137,
+        184,
+        94,
+        80,
+        225
+      ]
+    },
+    {
+      "name": "LiabilityDecision",
+      "discriminator": [
+        167,
+        205,
+        9,
+        194,
+        102,
+        237,
+        208,
+        180
+      ]
+    },
+    {
+      "name": "LiabilityProposal",
+      "discriminator": [
+        151,
+        99,
+        146,
+        0,
+        181,
+        98,
+        190,
+        245
+      ]
+    },
+    {
+      "name": "Project",
+      "discriminator": [
+        205,
+        168,
+        189,
+        202,
+        181,
+        247,
+        142,
+        19
+      ]
+    },
+    {
+      "name": "VerificationDecision",
+      "discriminator": [
+        31,
+        236,
+        120,
+        40,
+        164,
+        31,
+        150,
+        247
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "BondDeposited",
+      "discriminator": [
+        210,
+        149,
+        47,
+        232,
+        72,
+        128,
+        248,
+        153
+      ]
+    },
+    {
+      "name": "BondReleasePaused",
+      "discriminator": [
+        184,
+        9,
+        76,
+        46,
+        41,
+        76,
+        53,
+        219
+      ]
+    },
+    {
+      "name": "BondReleaseResumed",
+      "discriminator": [
+        218,
+        194,
+        15,
+        115,
+        222,
+        170,
+        193,
+        27
+      ]
+    },
+    {
+      "name": "BondReleased",
+      "discriminator": [
+        191,
+        161,
+        250,
+        29,
+        188,
+        146,
+        120,
+        251
+      ]
+    },
+    {
+      "name": "CorrectionAppended",
+      "discriminator": [
+        206,
+        140,
+        174,
+        207,
+        127,
+        127,
+        155,
+        164
+      ]
+    },
+    {
+      "name": "DisputeOpened",
+      "discriminator": [
+        239,
+        222,
+        102,
+        235,
+        193,
+        85,
+        1,
+        214
+      ]
+    },
+    {
+      "name": "DisputeResolved",
+      "discriminator": [
+        121,
+        64,
+        249,
+        153,
+        139,
+        128,
+        236,
+        187
+      ]
+    },
+    {
+      "name": "EvidenceResubmitted",
+      "discriminator": [
+        192,
+        138,
+        141,
+        94,
+        138,
+        242,
+        169,
+        104
+      ]
+    },
+    {
+      "name": "EvidenceSubmitted",
+      "discriminator": [
+        13,
+        123,
+        197,
+        44,
+        231,
+        117,
+        168,
+        53
+      ]
+    },
+    {
+      "name": "EvidenceVerified",
+      "discriminator": [
+        93,
+        104,
+        48,
+        167,
+        124,
+        181,
+        45,
+        71
+      ]
+    },
+    {
+      "name": "LiabilityApproved",
+      "discriminator": [
+        65,
+        102,
+        159,
+        160,
+        179,
+        106,
+        69,
+        147
+      ]
+    },
+    {
+      "name": "LiabilityProposed",
+      "discriminator": [
+        183,
+        202,
+        96,
+        24,
+        75,
+        84,
+        60,
+        143
+      ]
+    },
+    {
+      "name": "LiabilityRejected",
+      "discriminator": [
+        194,
+        104,
+        160,
+        28,
+        221,
+        236,
+        127,
+        87
+      ]
+    },
+    {
+      "name": "ProjectCreated",
+      "discriminator": [
+        192,
+        10,
+        163,
+        29,
+        185,
+        31,
+        67,
+        168
+      ]
+    },
+    {
+      "name": "VerificationRejected",
+      "discriminator": [
+        92,
+        213,
+        161,
+        9,
+        172,
+        75,
+        178,
+        23
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "UnauthorizedRole",
+      "msg": "This wallet is not authorized for the requested role."
+    },
+    {
+      "code": 6001,
+      "name": "InvalidStateTransition",
+      "msg": "The requested state transition is not allowed."
+    },
+    {
+      "code": 6002,
+      "name": "RecordProjectMismatch",
+      "msg": "The supplied record belongs to a different project."
+    },
+    {
+      "code": 6003,
+      "name": "ReasonRequired",
+      "msg": "A rejection or resolution reason is required."
+    },
+    {
+      "code": 6004,
+      "name": "EvidenceReferenceRequired",
+      "msg": "A supporting evidence reference is required."
+    },
+    {
+      "code": 6005,
+      "name": "InvalidHash",
+      "msg": "The supplied SHA-256 hash is invalid."
+    },
+    {
+      "code": 6006,
+      "name": "InvalidUri",
+      "msg": "The supplied storage URI is invalid."
+    },
+    {
+      "code": 6007,
+      "name": "StringTooLong",
+      "msg": "A supplied string exceeds its bounded on-chain length."
+    },
+    {
+      "code": 6008,
+      "name": "EvidenceTypeRequired",
+      "msg": "An evidence type is required."
+    },
+    {
+      "code": 6009,
+      "name": "RolesMustBeDistinct",
+      "msg": "Configured project roles must use distinct wallets."
+    },
+    {
+      "code": 6010,
+      "name": "EvidenceNotVerified",
+      "msg": "The evidence has not been verified."
+    },
+    {
+      "code": 6011,
+      "name": "ActiveDisputeExists",
+      "msg": "An active dispute blocks bond release."
+    },
+    {
+      "code": 6012,
+      "name": "ReleaseIsPaused",
+      "msg": "Bond release is paused."
+    },
+    {
+      "code": 6013,
+      "name": "OutstandingCorrectionRequired",
+      "msg": "A required correction has not been appended."
+    },
+    {
+      "code": 6014,
+      "name": "LiabilityNotApproved",
+      "msg": "No approved liability exists."
+    },
+    {
+      "code": 6015,
+      "name": "LiabilityRevisionMismatch",
+      "msg": "The liability revision does not match the current project revision."
+    },
+    {
+      "code": 6016,
+      "name": "InsufficientBondBalance",
+      "msg": "The escrow vault does not have enough tokens."
+    },
+    {
+      "code": 6017,
+      "name": "InvalidVault",
+      "msg": "The token vault is invalid."
+    },
+    {
+      "code": 6018,
+      "name": "InvalidTokenMint",
+      "msg": "The token mint is invalid."
+    },
+    {
+      "code": 6019,
+      "name": "InvalidReleaseRecipient",
+      "msg": "The release recipient is invalid."
+    },
+    {
+      "code": 6020,
+      "name": "AlreadyResolved",
+      "msg": "This dispute has already been resolved."
+    },
+    {
+      "code": 6021,
+      "name": "CounterUnderflow",
+      "msg": "A counter would underflow."
+    },
+    {
+      "code": 6022,
+      "name": "ArithmeticOverflow",
+      "msg": "An arithmetic operation overflowed."
+    },
+    {
+      "code": 6023,
+      "name": "StaleCorrectionHead",
+      "msg": "The supplied correction head is stale."
+    },
+    {
+      "code": 6024,
+      "name": "BondAlreadyReleased",
+      "msg": "The bond has already been released."
+    },
+    {
+      "code": 6025,
+      "name": "InvalidAmount",
+      "msg": "The amount must be greater than zero and valid for this action."
+    },
+    {
+      "code": 6026,
+      "name": "InvalidDisputeTarget",
+      "msg": "The dispute target is not the current approved liability decision."
+    }
+  ],
+  "types": [
+    {
+      "name": "BondDeposited",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "actor",
+            "type": "pubkey"
+          },
+          {
+            "name": "record",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "sequence",
+            "type": "u64"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "total_deposited",
+            "type": "u64"
+          },
+          {
+            "name": "vault",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BondEscrow",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "token_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "deposited_amount",
+            "type": "u64"
+          },
+          {
+            "name": "released_amount",
+            "type": "u64"
+          },
+          {
+            "name": "required_amount",
+            "type": "u64"
+          },
+          {
+            "name": "liability_revision",
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "BondStatus"
+              }
+            }
+          },
+          {
+            "name": "release_paused",
+            "type": "bool"
+          },
+          {
+            "name": "release_recipient",
+            "type": "pubkey"
+          },
+          {
+            "name": "last_updated_at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BondReleasePaused",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "actor",
+            "type": "pubkey"
+          },
+          {
+            "name": "record",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "sequence",
+            "type": "u64"
+          },
+          {
+            "name": "dispute",
+            "type": "pubkey"
+          },
+          {
+            "name": "active_dispute_count",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BondReleaseResumed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "actor",
+            "type": "pubkey"
+          },
+          {
+            "name": "record",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "sequence",
+            "type": "u64"
+          },
+          {
+            "name": "cleared_by",
+            "type": "pubkey"
+          },
+          {
+            "name": "revision",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BondReleased",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "actor",
+            "type": "pubkey"
+          },
+          {
+            "name": "record",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "sequence",
+            "type": "u64"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "recipient",
+            "type": "pubkey"
+          },
+          {
+            "name": "total_released",
+            "type": "u64"
+          },
+          {
+            "name": "revision",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BondStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Unfunded"
+          },
+          {
+            "name": "Funded"
+          },
+          {
+            "name": "ReleasePaused"
+          },
+          {
+            "name": "ReleaseReady"
+          },
+          {
+            "name": "Released"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CorrectionAppended",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "actor",
+            "type": "pubkey"
+          },
+          {
+            "name": "record",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "sequence",
+            "type": "u64"
+          },
+          {
+            "name": "target",
+            "type": "pubkey"
+          },
+          {
+            "name": "correction_type",
+            "type": {
+              "defined": {
+                "name": "CorrectionType"
+              }
+            }
+          },
+          {
+            "name": "resulting_amount",
+            "type": "u64"
+          },
+          {
+            "name": "resulting_revision",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CorrectionRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "index",
+            "type": "u64"
+          },
+          {
+            "name": "author",
+            "type": "pubkey"
+          },
+          {
+            "name": "target_record",
+            "type": "pubkey"
+          },
+          {
+            "name": "resolution",
+            "type": "pubkey"
+          },
+          {
+            "name": "correction_type",
+            "type": {
+              "defined": {
+                "name": "CorrectionType"
+              }
+            }
+          },
+          {
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "name": "supporting_hash",
+            "type": {
+              "option": {
+                "array": [
+                  "u8",
+                  32
+                ]
+              }
+            }
+          },
+          {
+            "name": "supporting_uri",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "corrected_liability_amount",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "resulting_liability_revision",
+            "type": "u64"
+          },
+          {
+            "name": "previous_correction",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CorrectionType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Corrected"
+          },
+          {
+            "name": "Reaffirmed"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DisputeOpened",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "actor",
+            "type": "pubkey"
+          },
+          {
+            "name": "record",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "sequence",
+            "type": "u64"
+          },
+          {
+            "name": "target",
+            "type": "pubkey"
+          },
+          {
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "name": "supporting_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "supporting_uri",
+            "type": "string"
+          },
+          {
+            "name": "active_dispute_count",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DisputeRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "index",
+            "type": "u64"
+          },
+          {
+            "name": "opened_by",
+            "type": "pubkey"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "DisputeStatus"
+              }
+            }
+          },
+          {
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "name": "supporting_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "supporting_uri",
+            "type": "string"
+          },
+          {
+            "name": "target_record",
+            "type": "pubkey"
+          },
+          {
+            "name": "opened_at",
+            "type": "i64"
+          },
+          {
+            "name": "resolved_at",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "resolution",
+            "type": {
+              "option": "pubkey"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "DisputeResolution",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "dispute",
+            "type": "pubkey"
+          },
+          {
+            "name": "target_record",
+            "type": "pubkey"
+          },
+          {
+            "name": "regulator",
+            "type": "pubkey"
+          },
+          {
+            "name": "outcome",
+            "type": {
+              "defined": {
+                "name": "ResolutionOutcome"
+              }
+            }
+          },
+          {
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "name": "supporting_hash",
+            "type": {
+              "option": {
+                "array": [
+                  "u8",
+                  32
+                ]
+              }
+            }
+          },
+          {
+            "name": "supporting_uri",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "requires_correction",
+            "type": "bool"
+          },
+          {
+            "name": "correction_satisfied",
+            "type": "bool"
+          },
+          {
+            "name": "resolved_at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DisputeResolved",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "actor",
+            "type": "pubkey"
+          },
+          {
+            "name": "record",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "sequence",
+            "type": "u64"
+          },
+          {
+            "name": "dispute",
+            "type": "pubkey"
+          },
+          {
+            "name": "outcome",
+            "type": {
+              "defined": {
+                "name": "ResolutionOutcome"
+              }
+            }
+          },
+          {
+            "name": "requires_correction",
+            "type": "bool"
+          },
+          {
+            "name": "remaining_active_count",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DisputeStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Open"
+          },
+          {
+            "name": "Resolved"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EvidenceRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "index",
+            "type": "u64"
+          },
+          {
+            "name": "submitter",
+            "type": "pubkey"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "EvidenceStatus"
+              }
+            }
+          },
+          {
+            "name": "content_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "storage_uri",
+            "type": "string"
+          },
+          {
+            "name": "evidence_type",
+            "type": "string"
+          },
+          {
+            "name": "metadata_uri",
+            "type": "string"
+          },
+          {
+            "name": "previous_evidence",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "submitted_at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EvidenceResubmitted",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "actor",
+            "type": "pubkey"
+          },
+          {
+            "name": "record",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "sequence",
+            "type": "u64"
+          },
+          {
+            "name": "rejected_evidence",
+            "type": "pubkey"
+          },
+          {
+            "name": "new_evidence",
+            "type": "pubkey"
+          },
+          {
+            "name": "index",
+            "type": "u64"
+          },
+          {
+            "name": "content_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "storage_uri",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EvidenceStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Submitted"
+          },
+          {
+            "name": "Resubmitted"
+          },
+          {
+            "name": "Rejected"
+          },
+          {
+            "name": "Verified"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EvidenceSubmitted",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "actor",
+            "type": "pubkey"
+          },
+          {
+            "name": "record",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "sequence",
+            "type": "u64"
+          },
+          {
+            "name": "index",
+            "type": "u64"
+          },
+          {
+            "name": "content_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "storage_uri",
+            "type": "string"
+          },
+          {
+            "name": "evidence_type",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EvidenceVerified",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "actor",
+            "type": "pubkey"
+          },
+          {
+            "name": "record",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "sequence",
+            "type": "u64"
+          },
+          {
+            "name": "evidence",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LiabilityApproved",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "actor",
+            "type": "pubkey"
+          },
+          {
+            "name": "record",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "sequence",
+            "type": "u64"
+          },
+          {
+            "name": "proposal",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "revision",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LiabilityDecision",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "proposal",
+            "type": "pubkey"
+          },
+          {
+            "name": "regulator",
+            "type": "pubkey"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "LiabilityStatus"
+              }
+            }
+          },
+          {
+            "name": "approved_amount",
+            "type": "u64"
+          },
+          {
+            "name": "liability_revision",
+            "type": "u64"
+          },
+          {
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "name": "supporting_hash",
+            "type": {
+              "option": {
+                "array": [
+                  "u8",
+                  32
+                ]
+              }
+            }
+          },
+          {
+            "name": "supporting_uri",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "decided_at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LiabilityProposal",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "index",
+            "type": "u64"
+          },
+          {
+            "name": "verified_evidence",
+            "type": "pubkey"
+          },
+          {
+            "name": "proposed_amount",
+            "type": "u64"
+          },
+          {
+            "name": "currency_code",
+            "type": {
+              "array": [
+                "u8",
+                8
+              ]
+            }
+          },
+          {
+            "name": "rationale_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "rationale_uri",
+            "type": "string"
+          },
+          {
+            "name": "previous_proposal",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LiabilityProposed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "actor",
+            "type": "pubkey"
+          },
+          {
+            "name": "record",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "sequence",
+            "type": "u64"
+          },
+          {
+            "name": "evidence",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LiabilityRejected",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "actor",
+            "type": "pubkey"
+          },
+          {
+            "name": "record",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "sequence",
+            "type": "u64"
+          },
+          {
+            "name": "proposal",
+            "type": "pubkey"
+          },
+          {
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "name": "supporting_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "supporting_uri",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LiabilityStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Rejected"
+          },
+          {
+            "name": "Approved"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Project",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "project_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "company",
+            "type": "pubkey"
+          },
+          {
+            "name": "auditor",
+            "type": "pubkey"
+          },
+          {
+            "name": "regulator",
+            "type": "pubkey"
+          },
+          {
+            "name": "community_authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "financial_observer",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "metadata_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "metadata_uri",
+            "type": "string"
+          },
+          {
+            "name": "latest_evidence",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "latest_verified_evidence",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "latest_liability_decision",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "latest_correction",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "evidence_count",
+            "type": "u64"
+          },
+          {
+            "name": "liability_proposal_count",
+            "type": "u64"
+          },
+          {
+            "name": "dispute_count",
+            "type": "u64"
+          },
+          {
+            "name": "correction_count",
+            "type": "u64"
+          },
+          {
+            "name": "event_sequence",
+            "type": "u64"
+          },
+          {
+            "name": "active_dispute_count",
+            "type": "u32"
+          },
+          {
+            "name": "outstanding_correction_count",
+            "type": "u32"
+          },
+          {
+            "name": "current_approved_liability",
+            "type": "u64"
+          },
+          {
+            "name": "current_liability_revision",
+            "type": "u64"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProjectCreated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "actor",
+            "type": "pubkey"
+          },
+          {
+            "name": "record",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "sequence",
+            "type": "u64"
+          },
+          {
+            "name": "auditor",
+            "type": "pubkey"
+          },
+          {
+            "name": "regulator",
+            "type": "pubkey"
+          },
+          {
+            "name": "community_authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "metadata_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "metadata_uri",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ResolutionOutcome",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Upheld"
+          },
+          {
+            "name": "Dismissed"
+          },
+          {
+            "name": "RemediationRequired"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VerificationDecision",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "evidence",
+            "type": "pubkey"
+          },
+          {
+            "name": "auditor",
+            "type": "pubkey"
+          },
+          {
+            "name": "approved",
+            "type": "bool"
+          },
+          {
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "name": "supporting_hash",
+            "type": {
+              "option": {
+                "array": [
+                  "u8",
+                  32
+                ]
+              }
+            }
+          },
+          {
+            "name": "supporting_uri",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "decided_at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VerificationRejected",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "project",
+            "type": "pubkey"
+          },
+          {
+            "name": "actor",
+            "type": "pubkey"
+          },
+          {
+            "name": "record",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "sequence",
+            "type": "u64"
+          },
+          {
+            "name": "evidence",
+            "type": "pubkey"
+          },
+          {
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "name": "supporting_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "supporting_uri",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  ]
+}
