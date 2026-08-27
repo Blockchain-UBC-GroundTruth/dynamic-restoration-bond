@@ -1,6 +1,6 @@
 # GroundTruth demo evidence pack
 
-This folder contains a fully synthetic dataset for the GroundTruth dynamic restoration bond hackathon demonstration. Every place, party, measurement, threshold, and result is fictional. Do not use these files for scientific, legal, regulatory, environmental, or health decisions.
+This folder contains a fully synthetic dataset for the GroundTruth dynamic restoration bond hackathon demonstration. The fictional North Ridge company project has finished using a development footprint and must restore its compacted staging pad, slopes, access routes, drainage, vegetation, and downstream water conditions. The scenario is deliberately sector-neutral rather than limited to mining. Every place, party, measurement, threshold, and result is fictional. Do not use these files for scientific, legal, regulatory, environmental, or health decisions.
 
 ## Suggested demo order
 

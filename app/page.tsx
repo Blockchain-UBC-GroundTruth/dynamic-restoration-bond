@@ -10,7 +10,7 @@ const initialTimeline = [
     time: '11:42',
     type: 'Dispute opened',
     actor: 'SqyF…mJ8k · Community',
-    detail: 'Heavy metal levels exceed the safety threshold in river cross-section B.',
+    detail: 'Heavy metal levels exceed the demo threshold at downstream monitoring reach B.',
     tone: 'danger',
   },
   {
@@ -99,7 +99,7 @@ export default function Home() {
         <header className="topbar">
           <div className="project-switcher">
             <span className="project-avatar">LF</span>
-            <div><small>Active project</small><strong>Lower Fraser Restoration</strong></div>
+            <div><small>Active project</small><strong>North Ridge Development Site</strong></div>
             <span className="chevron">⌄</span>
           </div>
           <div className="top-actions">
@@ -202,7 +202,7 @@ export default function Home() {
           <section className="case-modal" role="dialog" aria-modal="true" aria-labelledby="case-title" onMouseDown={(event) => event.stopPropagation()}>
             <div className="modal-topline"><span className="blocked-chip">Active dispute</span><button onClick={() => setCaseOpen(false)} aria-label="Close dispute">Close</button></div>
             <p className="eyebrow">Community case · DSP-0001</p>
-            <h2 id="case-title">River cross-section B exceeds heavy metal safety thresholds.</h2>
+            <h2 id="case-title">Downstream monitoring reach B exceeds heavy metal demo thresholds.</h2>
             <p className="modal-copy">An authorized local community representative submitted an independent water test against liability decision revision 03. The original report remains linked by its SHA-256 hash.</p>
             <div className="evidence-reference">
               <span>Supporting report</span>

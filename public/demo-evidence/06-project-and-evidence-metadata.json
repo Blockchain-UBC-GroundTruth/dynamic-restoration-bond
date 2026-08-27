@@ -3,10 +3,11 @@
   "datasetType": "synthetic-hackathon-demo",
   "disclaimer": "All projects, locations, organizations, observations, measurements, thresholds, and results are fictional and must not be used for scientific, legal, regulatory, environmental, or health decisions.",
   "project": {
-    "name": "Lower Fraser Restoration Demo",
+    "name": "North Ridge Development Site Restoration",
     "team": "GroundTruth",
-    "projectId": "GT-LFR-2026-001",
-    "jurisdiction": "Fictional demonstration area inspired by the Lower Fraser region",
+    "projectId": "GT-NRDS-2026-001",
+    "jurisdiction": "Fictional coastal British Columbia demonstration area",
+    "developmentFootprint": "Former corporate staging, access, drainage, and temporary infrastructure area",
     "bondAsset": "Demo USDC",
     "bondAmount": "250000",
     "targetVegetationCoveragePercent": 40.0

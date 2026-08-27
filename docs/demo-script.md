@@ -1,6 +1,6 @@
 # GroundTruth demo flow
 
-1. Open the Lower Fraser Restoration project and point out the approved liability, fully funded vault, and active dispute.
+1. Open the North Ridge Development Site project and explain that the company must restore its former development footprint. Point out the approved liability, fully funded vault, and active dispute.
 2. Show that the release checklist names the active dispute as the failed guard.
 3. Open the community case and show the supporting report name and content hash.
 4. Record the regulator resolution with the correction requirement enabled.

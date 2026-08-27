@@ -101,7 +101,7 @@ def p(text, style="BodyGT"):
 def info_table():
     rows = [
         [p("PROJECT", "Kicker"), p("REPORT ID", "Kicker"), p("ISSUE DATE", "Kicker")],
-        [p("Lower Fraser Restoration Demo", "BodyGT"), p("GT-WQ-2026-08-27-001", "BodyGT"), p("August 27, 2026", "BodyGT")],
+        [p("North Ridge Development Site", "BodyGT"), p("GT-WQ-2026-08-27-001", "BodyGT"), p("August 27, 2026", "BodyGT")],
         [p("REQUESTING PARTY", "Kicker"), p("SAMPLE DATE", "Kicker"), p("STATUS", "Kicker")],
         [p("Authorized Community Representative", "BodyGT"), p("August 24, 2026", "BodyGT"), p("Final - Simulation Only", "BodyGT")],
     ]
@@ -182,9 +182,9 @@ def results_table():
 def chain_table():
     data = [
         ["Sample ID", "Location", "Matrix", "Collection", "Condition"],
-        ["LF-RXB-01", "River cross-section B", "Surface water", "Aug 24, 09:42", "Accepted"],
-        ["LF-RXB-DUP", "Field duplicate", "Surface water", "Aug 24, 09:45", "Accepted"],
-        ["LF-FB-01", "Field blank", "Reagent water", "Aug 24, 10:10", "Accepted"],
+        ["NR-DSB-01", "Downstream reach B", "Surface water", "Aug 24, 09:42", "Accepted"],
+        ["NR-DSB-DUP", "Field duplicate", "Surface water", "Aug 24, 09:45", "Accepted"],
+        ["NR-FB-01", "Field blank", "Reagent water", "Aug 24, 10:10", "Accepted"],
     ]
     table = Table(data, colWidths=[1.15 * inch, 1.75 * inch, 1.15 * inch, 1.25 * inch, 0.9 * inch])
     table.setStyle(TableStyle([
