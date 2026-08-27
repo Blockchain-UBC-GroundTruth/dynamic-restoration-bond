@@ -1,0 +1,3 @@
+evidence_id,revision,capture_date,coverage_percent,target_percent,result,workflow_action,file,disclaimer
+GT-VEG-001,1,2026-07-18,37.4,40.0,BELOW_TARGET,REJECT_AND_REQUEST_CORRECTION,01-drone-initial-sparse-vegetation.png,SYNTHETIC_DEMO_DATA
+GT-VEG-002,2,2026-08-22,68.2,40.0,TARGET_MET,VERIFY_RESUBMISSION,02-drone-resubmission-restored.png,SYNTHETIC_DEMO_DATA

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "1.0",
+  "datasetType": "synthetic-hackathon-demo",
+  "disclaimer": "All projects, locations, organizations, observations, measurements, thresholds, and results are fictional and must not be used for scientific, legal, regulatory, environmental, or health decisions.",
+  "project": {
+    "name": "Lower Fraser Restoration Demo",
+    "team": "GroundTruth",
+    "projectId": "GT-LFR-2026-001",
+    "jurisdiction": "Fictional demonstration area inspired by the Lower Fraser region",
+    "bondAsset": "Demo USDC",
+    "bondAmount": "250000",
+    "targetVegetationCoveragePercent": 40.0
+  },
+  "evidence": [
+    {
+      "evidenceId": "GT-VEG-001",
+      "revision": 1,
+      "type": "drone-image",
+      "file": "01-drone-initial-sparse-vegetation.png",
+      "capturedAt": "2026-07-18T17:20:00Z",
+      "submittedByRole": "project-operator",
+      "observedVegetationCoveragePercent": 37.4,
+      "expectedDemoDecision": "rejected",
+      "reason": "Vegetation coverage is below the fictional 40% target."
+    },
+    {
+      "evidenceId": "GT-VEG-002",
+      "revision": 2,
+      "type": "drone-image",
+      "file": "02-drone-resubmission-restored.png",
+      "capturedAt": "2026-08-22T17:35:00Z",
+      "submittedByRole": "project-operator",
+      "observedVegetationCoveragePercent": 68.2,
+      "expectedDemoDecision": "verified",
+      "reason": "Corrective planting exceeds the fictional target."
+    },
+    {
+      "evidenceId": "GT-WQ-PHOTO-001",
+      "revision": 1,
+      "type": "community-field-photo",
+      "file": "03-community-water-sampling.png",
+      "capturedAt": "2026-08-24T16:42:00Z",
+      "submittedByRole": "authorized-community-representative",
+      "expectedDemoDecision": "supporting-evidence"
+    },
+    {
+      "evidenceId": "GT-WQ-2026-08-27-001",
+      "revision": 1,
+      "type": "community-water-quality-report",
+      "file": "04-community-water-quality-report.pdf",
+      "issuedAt": "2026-08-27T19:00:00Z",
+      "submittedByRole": "authorized-community-representative",
+      "expectedDemoDecision": "open-dispute-and-pause-release",
+      "targetLiabilityRevision": 3
+    },
+    {
+      "evidenceId": "GT-VEG-SUMMARY-001",
+      "revision": 1,
+      "type": "vegetation-analysis-csv",
+      "file": "05-vegetation-analysis-summary.csv",
+      "issuedAt": "2026-08-27T19:00:00Z",
+      "submittedByRole": "independent-verifier"
+    }
+  ],
+  "integrity": {
+    "algorithm": "SHA-256",
+    "manifest": "SHA256SUMS.txt",
+    "usage": "Hash each uploaded file and store the digest or URI plus digest in the demo evidence account."
+  }
+}
