@@ -43,6 +43,13 @@ const auditor = loadKeypair('auditor');
 const regulator = loadKeypair('regulator');
 const community = loadKeypair('community');
 
+const devnetPauseMs = Number(process.env.GROUNDTRUTH_RPC_PAUSE_MS ?? 1_500);
+async function paceRpc() {
+  if (cluster === 'devnet' && devnetPauseMs > 0) {
+    await new Promise((resolvePromise) => setTimeout(resolvePromise, devnetPauseMs));
+  }
+}
+
 async function ensureFunding() {
   let balance = await conn.getBalance(deployer.publicKey);
   if (cluster === 'localnet' && balance < 10 * LAMPORTS_PER_SOL) {
@@ -66,6 +73,7 @@ async function ensureFunding() {
         lamports: roleFundingAmount * LAMPORTS_PER_SOL,
       }));
       await sendAndConfirmTransaction(conn, transaction, [deployer], { commitment: 'confirmed' });
+      await paceRpc();
     }
   }
 }
@@ -75,8 +83,11 @@ async function main() {
   await ensureFunding();
 
   const mint = await createMint(conn, deployer, deployer.publicKey, null, 0);
+  await paceRpc();
   const companyToken = await getOrCreateAssociatedTokenAccount(conn, deployer, mint, company.publicKey);
+  await paceRpc();
   await mintTo(conn, deployer, mint, companyToken.address, deployer, DEMO_AMOUNT);
+  await paceRpc();
 
   const runId = `${cluster}-${Date.now()}`;
   const projectId = sha256Bytes(`groundtruth-north-ridge-${runId}`);
@@ -126,11 +137,13 @@ async function main() {
       systemProgram: SystemProgram.programId,
     })
     .rpc();
+  await paceRpc();
 
   await (companyProgram.methods as any)
     .submitEvidence(Array.from(initialHash), initialUri, 'drone-multispectral', metadataUri)
     .accountsStrict({ project, company: company.publicKey, evidence: evidence0, systemProgram: SystemProgram.programId })
     .rpc();
+  await paceRpc();
 
   const auditorProgram = programFor(conn, auditor);
   await (auditorProgram.methods as any)
@@ -141,16 +154,19 @@ async function main() {
     )
     .accountsStrict({ project, auditor: auditor.publicKey, evidence: evidence0, decision: verification0, systemProgram: SystemProgram.programId })
     .rpc();
+  await paceRpc();
 
   await (companyProgram.methods as any)
     .resubmitEvidence(Array.from(restoredHash), restoredUri, 'drone-multispectral', metadataUri)
     .accountsStrict({ project, company: company.publicKey, previousEvidence: evidence0, evidence: evidence1, systemProgram: SystemProgram.programId })
     .rpc();
+  await paceRpc();
 
   await (auditorProgram.methods as any)
     .verifyEvidence()
     .accountsStrict({ project, auditor: auditor.publicKey, evidence: evidence1, decision: verification1, systemProgram: SystemProgram.programId })
     .rpc();
+  await paceRpc();
 
   const currencyCode = Buffer.alloc(8);
   currencyCode.write('GTB');
@@ -158,17 +174,20 @@ async function main() {
     .proposeLiabilityChange(new BN(DEMO_AMOUNT), Array.from(currencyCode), Array.from(restoredHash), restoredUri, null)
     .accountsStrict({ project, company: company.publicKey, evidence: evidence1, proposal, systemProgram: SystemProgram.programId })
     .rpc();
+  await paceRpc();
 
   const regulatorProgram = programFor(conn, regulator);
   await (regulatorProgram.methods as any)
     .approveLiabilityChange('Verified restoration evidence supports the demonstration liability amount.')
     .accountsStrict({ project, regulator: regulator.publicKey, proposal, evidence: evidence1, decision, bond, systemProgram: SystemProgram.programId })
     .rpc();
+  await paceRpc();
 
   await (companyProgram.methods as any)
     .depositBond(new BN(DEMO_AMOUNT))
     .accountsStrict({ project, company: company.publicKey, bond, companyToken: companyToken.address, vault, tokenProgram: TOKEN_PROGRAM_ID })
     .rpc();
+  await paceRpc();
 
   const communityProgram = programFor(conn, community);
   await (communityProgram.methods as any)
@@ -179,6 +198,7 @@ async function main() {
     )
     .accountsStrict({ project, communityAuthority: community.publicKey, targetDecision: decision, dispute, bond, systemProgram: SystemProgram.programId })
     .rpc();
+  await paceRpc();
 
   let guardVerified = false;
   try {
