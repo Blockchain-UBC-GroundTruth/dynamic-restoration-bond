@@ -4,14 +4,23 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useGroundTruth } from '@/lib/use-groundtruth';
 
+type TimelineItem = {
+  time: string;
+  type: string;
+  actor: string;
+  detail: string;
+  tone: string;
+  account?: 'bond' | 'decision' | 'dispute' | 'resolution' | 'correction';
+};
 
-const initialTimeline = [
+const initialTimeline: TimelineItem[] = [
   {
     time: '11:42',
     type: 'Dispute opened',
     actor: 'Authorized community representative',
     detail: 'Heavy metal levels exceed the demo threshold at downstream monitoring reach B.',
     tone: 'danger',
+    account: 'dispute',
   },
   {
     time: '10:18',
@@ -19,6 +28,7 @@ const initialTimeline = [
     actor: 'North Ridge Development · Company',
     detail: '125,000 GTB moved to the program-controlled restoration vault.',
     tone: 'success',
+    account: 'bond',
   },
   {
     time: 'Yesterday',
@@ -26,6 +36,7 @@ const initialTimeline = [
     actor: 'Configured project authority · Regulator',
     detail: 'Revision 01 approved against verified multispectral evidence.',
     tone: 'neutral',
+    account: 'decision',
   },
 ];
 
@@ -35,7 +46,6 @@ function MiniMark({ label }: { label: string }) {
 
 export default function Home() {
   const [caseOpen, setCaseOpen] = useState(false);
-  const [activity, setActivity] = useState(initialTimeline);
   const chain = useGroundTruth();
   const stage = chain.stage;
   const role = chain.role;
@@ -45,32 +55,57 @@ export default function Home() {
   const released = stage === 'released';
   const reportHash = chain.config?.evidence.reportHashHex;
   const reportHashLabel = reportHash ? `${reportHash.slice(0, 10)}…${reportHash.slice(-10)}` : 'Loading evidence hash…';
-
-  function prependActivity(type: string, detail: string, tone: string) {
-    const address = chain.walletKey?.toBase58();
-    const actor = address ? `${address.slice(0, 4)}…${address.slice(-4)} · ${role}` : `Disconnected · ${role}`;
-    setActivity((items) => [{ time: 'Just now', type, actor, detail, tone }, ...items]);
-  }
+  const liability = chain.snapshot?.liability ?? 125000;
+  const vaultBalance = chain.snapshot?.deposited ?? 125000;
+  const releasedAmount = chain.snapshot?.released ?? 0;
+  const fundedPercent = liability > 0 ? Math.min(100, Math.round((vaultBalance / liability) * 100)) : 0;
+  const regulatorLabel = chain.config?.roles.regulator
+    ? `${chain.config.roles.regulator.slice(0, 4)}…${chain.config.roles.regulator.slice(-4)} · Regulator`
+    : 'Configured project authority · Regulator';
+  const activity: TimelineItem[] = [
+    ...(released ? [{
+      time: 'On-chain',
+      type: 'Bond released',
+      actor: regulatorLabel,
+      detail: `${releasedAmount.toLocaleString()} GTB transferred; the program vault balance is now ${vaultBalance.toLocaleString()} GTB.`,
+      tone: 'success',
+      account: 'bond' as const,
+    }] : []),
+    ...(releaseReady || released ? [{
+      time: 'On-chain',
+      type: 'Correction appended',
+      actor: regulatorLabel,
+      detail: `Liability revision ${String(chain.snapshot?.revision ?? 2).padStart(2, '0')} reaffirmed at ${liability.toLocaleString()} GTB. Revision 01 remains linked below.`,
+      tone: 'success',
+      account: 'correction' as const,
+    }] : []),
+    ...(correctionRequired || releaseReady || released ? [{
+      time: 'On-chain',
+      type: 'Dispute resolved',
+      actor: regulatorLabel,
+      detail: 'The regulator upheld the concern and required an append-only liability correction.',
+      tone: 'neutral',
+      account: 'resolution' as const,
+    }] : []),
+    ...initialTimeline,
+  ];
 
   async function resolveDispute() {
     try {
       await chain.resolveDispute();
       setCaseOpen(false);
-      prependActivity('Dispute resolved on-chain', 'Regulator upheld the concern and required a liability correction.', 'neutral');
     } catch { /* Hook exposes the transaction error in the dashboard. */ }
   }
 
   async function appendCorrection() {
     try {
       await chain.appendCorrection();
-      prependActivity('Correction appended on-chain', 'Liability revision 02 reaffirmed at 125,000 GTB. Original approval retained.', 'success');
     } catch { /* Hook exposes the transaction error in the dashboard. */ }
   }
 
   async function releaseBond() {
     try {
       await chain.releaseBond();
-      prependActivity('Bond released on-chain', 'All program guards passed; 125,000 GTB released to the restoration recipient.', 'success');
     } catch { /* Hook exposes the transaction error in the dashboard. */ }
   }
 
@@ -153,18 +188,18 @@ export default function Home() {
 
           <section className="metrics-grid" aria-label="Project metrics">
             <article className="metric-card">
-              <div className="metric-label"><span>Approved liability</span><i className="status-dot green" /></div>
-              <strong>{(chain.snapshot?.liability ?? 125000).toLocaleString()} <small>GTB</small></strong>
-              <p>Revision {String(chain.snapshot?.revision ?? 3).padStart(2, '0')} · approved on-chain</p>
+              <div className="metric-label"><span>Approved liability record</span><i className="status-dot green" /></div>
+              <strong>{liability.toLocaleString()} <small>GTB</small></strong>
+              <p>Revision {String(chain.snapshot?.revision ?? 1).padStart(2, '0')} · retained after release</p>
             </article>
             <article className="metric-card">
-              <div className="metric-label"><span>Bond funded</span><i className="status-dot green" /></div>
-              <strong>100<span className="metric-percent">%</span></strong>
-              <div className="progress"><span /></div>
-              <p>{(chain.snapshot?.deposited ?? 125000).toLocaleString()} of {(chain.snapshot?.liability ?? 125000).toLocaleString()} GTB</p>
+              <div className="metric-label"><span>Program vault balance</span><i className="status-dot green" /></div>
+              <strong>{vaultBalance.toLocaleString()} <small>GTB</small></strong>
+              <div className="progress"><span style={{ width: `${fundedPercent}%` }} /></div>
+              <p>{released ? `${releasedAmount.toLocaleString()} GTB released to recipient` : `${fundedPercent}% funded against ${liability.toLocaleString()} GTB`}</p>
             </article>
-            <article className="metric-card metric-danger">
-              <div className="metric-label"><span>Release status</span><i className="status-dot red" /></div>
+            <article className={`metric-card ${disputeOpen || correctionRequired ? 'metric-danger' : ''}`}>
+              <div className="metric-label"><span>Release status</span><i className={`status-dot ${disputeOpen || correctionRequired ? 'red' : 'green'}`} /></div>
               <strong>{disputeOpen ? 'Paused' : correctionRequired ? 'Paused' : released ? 'Released' : 'Ready'}</strong>
               <p>{disputeOpen ? `${chain.snapshot?.activeDisputes ?? 1} active dispute blocks release` : correctionRequired ? 'Correction requirement blocks release' : released ? '125,000 GTB transferred' : 'All program guards passed'}</p>
             </article>
@@ -220,10 +255,10 @@ export default function Home() {
             <article className="panel timeline-panel" id="timeline">
               <div className="panel-header">
                 <div><p className="eyebrow">Immutable history</p><h2>Latest activity</h2></div>
-                <a href="#timeline">View all →</a>
+                <span className="ready-chip">Revision {String(chain.snapshot?.revision ?? 1).padStart(2, '0')}</span>
               </div>
               <div className="timeline-list">
-                {activity.slice(0, 4).map((item, index) => (
+                {activity.slice(0, 6).map((item, index) => (
                   <div className="timeline-item" key={`${item.type}-${index}`}>
                     <span className={`timeline-node ${item.tone}`} />
                     <div>
@@ -231,6 +266,7 @@ export default function Home() {
                       <h3>{item.type}</h3>
                       <p>{item.detail}</p>
                       <span>{item.actor}</span>
+                      {item.account && chain.config?.accounts[item.account] && <a href={chain.explorerUrl(chain.config.accounts[item.account])} target="_blank" rel="noreferrer">View record on Explorer ↗</a>}
                     </div>
                   </div>
                 ))}

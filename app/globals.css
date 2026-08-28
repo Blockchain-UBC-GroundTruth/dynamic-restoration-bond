@@ -140,6 +140,7 @@ h1 { margin: 0; max-width: 660px; color: #14241d; font-size: clamp(35px, 4vw, 58
 .timeline-node { z-index: 1; width: 11px; height: 11px; margin-top: 3px; border: 3px solid #eef1ed; border-radius: 50%; background: #718178; box-shadow: 0 0 0 1px #718178; }
 .timeline-node.danger { background: #d55b4d; box-shadow: 0 0 0 1px #d55b4d; }.timeline-node.success { background: #66a370; box-shadow: 0 0 0 1px #66a370; }
 .timeline-item small { color: #98a19c; font-size: 8px; }.timeline-item h3 { margin: 3px 0; font-size: 11px; }.timeline-item p { margin: 0; color: #68746d; font-size: 9px; line-height: 1.45; }.timeline-item div > span { display: block; margin-top: 5px; color: #809088; font-family: var(--font-geist-mono); font-size: 8px; }
+.timeline-item div > a { display: inline-block; margin-top: 6px; color: #476956; font-size: 8px; font-weight: 750; text-decoration: underline; text-underline-offset: 2px; }
 
 .dispute-banner.resolved-banner { border-color: #b9d3b7; background: #edf6e9; }
 .resolved-banner .alert-icon { background: #5e8a64; }
