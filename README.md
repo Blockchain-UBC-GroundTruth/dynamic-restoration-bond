@@ -2,15 +2,15 @@
 
 ![GroundTruth social preview](public/og.png)
 
-GroundTruth는 기업이 개발 활동을 마친 부지를 복원하는 과정에서 **증거, 책임 금액, 커뮤니티 분쟁, 규제기관 결정, 복원 보증금**을 하나의 공개된 감사 기록으로 연결하는 Solana 기반 데모입니다.
+GroundTruth is a Solana-based demo that connects **restoration evidence, liability amounts, community disputes, regulator decisions, and restoration bonds** in a single public audit trail for sites affected by corporate development activities.
 
-이 저장소는 GroundTruth 팀의 UBC Blockchain Blockathon 프로토타입입니다. 현재 데모는 Solana **Devnet**에 배포되어 있으며 실제 화폐나 Mainnet 자산을 사용하지 않습니다.
+This repository contains the GroundTruth team's prototype for the UBC Blockchain Blockathon. The current demo is deployed on Solana **Devnet** and does not use real currency or Mainnet assets.
 
-> Devnet SOL과 GTB는 테스트 전용이며 금전적 가치가 없습니다. 이 프로젝트가 생성한 지갑에는 실제 SOL, 토큰 또는 NFT를 보내지 마세요.
+> Devnet SOL and GTB are for testing only and have no monetary value. Do not send real SOL, tokens, or NFTs to any wallet created by this project.
 
-## 현재 배포 상태
+## Current Deployment
 
-| 항목 | 값 |
+| Item | Value |
 | --- | --- |
 | Network | Solana Devnet |
 | Program ID | `E33zGy2Sb8qYU4uRMzH59EqCq6Ut75oj8DjUMeTtLXvQ` |
@@ -21,18 +21,18 @@ GroundTruth는 기업이 개발 활동을 마친 부지를 복원하는 과정�
 - [Program on Solana Explorer](https://explorer.solana.com/address/E33zGy2Sb8qYU4uRMzH59EqCq6Ut75oj8DjUMeTtLXvQ?cluster=devnet)
 - [Seeded project on Solana Explorer](https://explorer.solana.com/address/J1bGEwZ2BAUtDHKHHVWZPH12SDXj82VPUL7BefiCTozF?cluster=devnet)
 
-`public/demo-config.json`에는 이 공개 Devnet 프로젝트를 읽는 데 필요한 공개 주소만 들어 있습니다. 서명 가능한 private key는 저장소에 포함되지 않습니다.
+`public/demo-config.json` contains only the public addresses required to read this Devnet project. No signing private keys are included in the repository.
 
-## 데모에서 보여주는 것
+## What the Demo Shows
 
-1. 회사가 복원 증거와 수정된 증거를 제출합니다.
-2. 독립 Auditor가 증거를 반려하거나 검증합니다.
-3. Regulator가 검증된 증거에 연결된 복원 책임 금액을 승인합니다.
-4. 회사가 PDA 소유 SPL Token vault에 125,000 GTB를 예치합니다.
-5. Community가 독립 수질 보고서를 근거로 분쟁을 제기합니다.
-6. 프로그램이 본드 릴리스를 즉시 중단합니다.
-7. Regulator가 분쟁을 해결하고 append-only correction을 추가합니다.
-8. 모든 guard가 통과했을 때만 실제 vault 잔액이 수령 계정으로 이동합니다.
+1. A company submits restoration evidence and a revised evidence package.
+2. An independent auditor rejects or verifies the evidence.
+3. A regulator approves the restoration liability amount linked to the verified evidence.
+4. The company deposits 125,000 GTB into a PDA-owned SPL Token vault.
+5. The community opens a dispute based on an independent water-quality report.
+6. The program immediately pauses the bond release.
+7. The regulator resolves the dispute and appends an immutable correction.
+8. The actual vault balance moves to the recipient account only after every release guard passes.
 
 ```mermaid
 flowchart LR
@@ -49,103 +49,103 @@ flowchart LR
     I -- No --> F
 ```
 
-## 핵심 구현
+## Core Implementation
 
-- Phantom 연결, 주소 기반 역할 판별, 실시간 Solana account 조회
-- 실제 Regulator 서명이 필요한 분쟁 해결, correction 추가, bond release
-- Anchor 프로그램의 authority 검증과 PDA 기반 append-only 기록
-- PDA가 소유하는 legacy SPL Token vault
-- active dispute와 correction requirement에 따른 원자적 bond pause
-- liability revision, 승인 결정, 실제 vault balance를 다시 확인하는 release guard
-- 프로젝트 단위 event sequence와 Solana Explorer 링크
-- 복원 전·후 드론 사진, 커뮤니티 수질 조사 사진, PDF, CSV, JSON metadata, SHA-256 manifest
-- Rust release-guard 단위 테스트와 재현 가능한 Devnet seed 스크립트
+- Phantom connection, address-based role detection, and live Solana account reads
+- Dispute resolution, correction recording, and bond release requiring a real regulator signature
+- Anchor authority validation and PDA-based append-only records
+- A legacy SPL Token vault owned by a PDA
+- Atomic bond pause based on active disputes and correction requirements
+- Release guards that recheck the liability revision, approval decision, and actual vault balance
+- Project-level event sequencing and Solana Explorer links
+- Before-and-after drone images, a community water-sampling image, PDF, CSV, JSON metadata, and a SHA-256 manifest
+- Rust unit tests for release guards and a reproducible Devnet seed script
 
-## 기술 스택
+## Technology Stack
 
 - Solana / Agave `4.2.1`
 - Anchor CLI `1.1.2`, Anchor TypeScript client `0.32.1`
-- Rust + SBPF v3 platform tools `v1.54`
-- Node.js `22.13+`, TypeScript, React 19, Next.js-compatible Vinext
+- Rust with SBPF v3 platform tools `v1.54`
+- Node.js `22.13+`, TypeScript, React 19, and Next.js-compatible Vinext
 - Phantom browser extension
 - Cloudflare Workers-compatible Sites build
 
-버전 기준은 `Anchor.toml`과 `package.json`에서 확인할 수 있습니다.
+See `Anchor.toml` and `package.json` for the exact project requirements.
 
-## 저장소 구조
+## Repository Structure
 
 ```text
 app/                         Dashboard UI
-lib/use-groundtruth.ts       Phantom 및 Anchor client integration
-lib/restoration_bond.json    Frontend용 Anchor IDL
+lib/use-groundtruth.ts       Phantom and Anchor client integration
+lib/restoration_bond.json    Anchor IDL used by the frontend
 programs/restoration_bond/   Rust on-chain program
-scripts/demo-*.ts            키 생성, seed, status, fallback transactions
-public/demo-config.json      현재 공개 demo account 주소와 RPC 설정
-public/demo-evidence/        합성 환경 증거 pack과 SHA-256 manifest
-docs/architecture.md         Authority 및 release-guard 설계
-docs/demo-script.md          발표 진행 순서
+scripts/demo-*.ts            Key generation, seed, status, and fallback transactions
+public/demo-config.json      Public demo account addresses and RPC configuration
+public/demo-evidence/        Synthetic environmental evidence pack and SHA-256 manifest
+docs/architecture.md         Authority and release-guard design
+docs/demo-script.md          Presentation walkthrough
 ```
 
 ---
 
-## 새로 클론한 사람: 기존 Devnet 데모 보기
+## New Contributors: View the Existing Devnet Demo
 
-이 방법은 체크인된 `public/demo-config.json`의 기존 프로젝트를 **읽기 전용**으로 실행합니다. 별도의 Solana 지갑이나 Faucet이 필요하지 않습니다.
+This option runs the project stored in `public/demo-config.json` in **read-only mode**. It does not require a Solana wallet or faucet funds.
 
-### 1. 클론 및 의존성 설치
+### 1. Clone and install dependencies
 
 ```bash
-git clone <REPOSITORY_URL>
+git clone https://github.com/Blockchain-UBC-GroundTruth/dynamic-restoration-bond.git
 cd dynamic-restoration-bond
 npm ci
 ```
 
-### 2. 프로덕션 웹 서버 실행
+### 2. Start the production web server
 
-Vinext 개발 모드는 일부 환경에서 RSC stream 오류가 날 수 있으므로 데모에는 production build를 권장합니다.
+Vinext development mode can produce an RSC stream error in some environments, so the production build is recommended for demos.
 
 ```bash
 npm run build
 npm run start
 ```
 
-터미널에 출력된 주소를 Chrome에서 엽니다.
+Open the address printed in the terminal in Chrome:
 
 ```text
 http://localhost:3000
 ```
 
-3000번 포트를 이미 사용 중이면 3001 또는 다음 빈 포트가 출력됩니다. 터미널에 실제로 표시된 주소를 사용하세요.
+If port 3000 is already in use, the terminal will show port 3001 or the next available port. Use the address actually printed in your terminal.
 
-### 3. 정상 상태 확인
+### 3. Confirm the connection
 
-왼쪽 아래에 다음이 표시되어야 합니다.
+The bottom-left corner of the app should display:
 
 ```text
 Solana Devnet
 On-chain sync active
 ```
 
-새 클론에는 기존 Regulator private key가 없으므로 기존 프로젝트의 마지막 세 트랜잭션은 서명할 수 없습니다. 직접 조작하려면 다음 절차로 자신만의 demo project를 seed합니다.
+A fresh clone does not contain the existing regulator's private key, so it cannot sign the final transactions for the seeded project. To run the interactive flow, seed a new demo project with your own role accounts by following the next section.
 
 ---
 
-## 새로 클론한 사람: 자신만의 Devnet 시나리오 만들기
+## New Contributors: Create Your Own Devnet Scenario
 
-배포된 GroundTruth 프로그램을 재사용하므로 5 SOL 규모의 program deploy는 필요하지 않습니다. 새 역할 계정과 프로젝트 계정을 만들 정도의 무료 Devnet SOL만 필요합니다.
+This process reuses the deployed GroundTruth program, so you do not need the approximately 5 Devnet SOL required to deploy the program itself. You only need enough free Devnet SOL to create new role and project accounts.
 
-### 사전 준비
+### Prerequisites
 
-다음을 설치합니다.
+Install the following tools:
 
-- Node.js 22.13 이상
+- Node.js 22.13 or later
 - Rust stable
 - Solana CLI 4.2.1
 - Anchor CLI 1.1.2
 - Google Chrome
 - [Phantom Chrome extension](https://phantom.com/download)
 
-설치 확인:
+Verify the installations:
 
 ```bash
 node --version
@@ -155,40 +155,40 @@ solana --version
 anchor --version
 ```
 
-### 1. 로컬 demo key 생성
+### 1. Generate local demo keys
 
 ```bash
 npm run demo:keys
 npm run demo:addresses
 ```
 
-다섯 계정이 `.demo-wallets/`에 생성됩니다.
+Five accounts are created in `.demo-wallets/`.
 
-| 계정 | 역할 |
+| Account | Role |
 | --- | --- |
-| `deployer` | 역할 계정 funding, mint 및 seed 비용 지불 |
-| `company` | 프로젝트, 증거, liability proposal, bond deposit |
-| `auditor` | 증거 반려 및 검증 |
-| `regulator` | liability 승인, 분쟁 해결, correction, release |
-| `community` | 승인 결정에 대한 분쟁 개시 |
+| `deployer` | Funds role accounts and pays mint and seed costs |
+| `company` | Creates the project, evidence, liability proposal, and bond deposit |
+| `auditor` | Rejects and verifies evidence |
+| `regulator` | Approves liability, resolves disputes, records corrections, and releases the bond |
+| `community` | Opens a dispute against an approved decision |
 
-`.demo-wallets/`는 `.gitignore`에 포함되어 있습니다. 이 디렉터리를 공유하거나 커밋하지 마세요.
+`.demo-wallets/` is included in `.gitignore`. Never share or commit this directory.
 
-### 2. Deployer 주소에 무료 Devnet SOL 받기
+### 2. Request free Devnet SOL for the deployer
 
-`npm run demo:addresses`에 출력된 **자신의 deployer 주소**를 복사합니다. 기존 저장소 관리자의 주소를 사용하면 안 됩니다.
+Copy **your own deployer address** from `npm run demo:addresses`. Do not use an address belonging to a repository maintainer.
 
-[Solana Foundation Devnet Faucet](https://faucet.solana.com/)에서 약 1.2–2 Devnet SOL을 요청합니다.
+Request approximately 1.2–2 Devnet SOL from the [Solana Foundation Devnet Faucet](https://faucet.solana.com/).
 
 ```bash
 solana balance <YOUR_DEPLOYER_ADDRESS> --url devnet
 ```
 
-Devnet SOL은 실제 가치가 없으며 Mainnet으로 전송할 수 없습니다. 실제 SOL이나 거래소 자산을 보내지 마세요.
+Devnet SOL has no real value and cannot be transferred to Mainnet. Do not send real SOL or exchange assets to this address.
 
-### 3. 새로운 Devnet 프로젝트 seed
+### 3. Seed a new Devnet project
 
-공용 RPC의 429를 피하기 위해 transaction 사이에 2.5초 간격을 둡니다.
+The command below pauses for 2.5 seconds between transactions to reduce public RPC rate-limit errors.
 
 ```bash
 env \
@@ -197,7 +197,7 @@ env \
   npm run demo:seed
 ```
 
-성공 출력:
+Successful output includes:
 
 ```text
 Project ... seeded in disputed state.
@@ -205,24 +205,24 @@ Regulator <YOUR_REGULATOR_ADDRESS>
 Release guard during active dispute: VERIFIED
 ```
 
-이 명령은 다음을 실제 Devnet에 생성합니다.
+This command creates the following accounts and records on Devnet:
 
-- 0-decimal GTB mint
-- Company associated token account
-- Project와 bond PDA
-- 반려된 evidence revision과 검증된 resubmission
-- 승인된 liability revision 01
-- 125,000 GTB가 들어 있는 vault
-- active community dispute
-- 새 주소가 반영된 `public/demo-config.json`
+- A zero-decimal GTB mint
+- A company associated token account
+- Project and bond PDAs
+- A rejected evidence revision and a verified resubmission
+- Approved liability revision 01
+- A vault containing 125,000 GTB
+- An active community dispute
+- An updated `public/demo-config.json` containing the new public addresses
 
-### 4. 상태 확인
+### 4. Check the state
 
 ```bash
 npm run demo:status
 ```
 
-기대 상태:
+Expected state:
 
 ```text
 cluster: 'devnet'
@@ -235,36 +235,36 @@ vaultBalance: '125000'
 releasedAmount: '0'
 ```
 
-### 5. Regulator 계정을 Phantom에 가져오기
+### 5. Import the regulator account into Phantom
 
-화면 공유를 끈 상태에서 실행합니다.
+Turn off screen sharing before running this command.
 
 ```bash
 npm run demo:regulator-key
 ```
 
-출력된 private key는 복사 후 외부에 공유하지 않습니다.
+Copy the printed private key, but do not share it externally.
 
-Phantom에서:
+In Phantom:
 
-1. Profile → Add Account → Import Private Key
-2. 이름: `GroundTruth Regulator`
-3. Network: `Solana`
-4. 출력된 demo private key 붙여넣기
-5. Settings → Developer Settings → Testnet Mode 켜기
-6. `Solana Devnet` 선택
-7. `GroundTruth Regulator` 계정 선택
+1. Select **Profile → Add Account → Import Private Key**.
+2. Name the account `GroundTruth Regulator`.
+3. Select `Solana` as the network.
+4. Paste the generated demo private key.
+5. Open **Settings → Developer Settings** and enable **Testnet Mode**.
+6. Select `Solana Devnet`.
+7. Switch to the `GroundTruth Regulator` account.
 
-시드가 성공했다면 Regulator에는 소량의 Devnet SOL이 있어 Phantom이 수수료를 시뮬레이션할 수 있습니다.
+If the seed completed successfully, the regulator account will hold a small amount of Devnet SOL so Phantom can simulate and submit transaction fees.
 
-### 6. 변경된 config로 웹 앱 실행
+### 6. Start the web app with the updated configuration
 
 ```bash
 npm run build
 npm run start
 ```
 
-Chrome에서 출력된 URL을 열고 `Connect Phantom`을 누릅니다. 다음 세 항목을 확인합니다.
+Open the printed URL in Chrome and select `Connect Phantom`. Confirm that the app displays:
 
 ```text
 Solana Devnet
@@ -272,16 +272,16 @@ On-chain sync active
 Regulator access
 ```
 
-### 7. 실제 시연 트랜잭션
+### 7. Submit the demo transactions
 
-다음 순서로 각 Phantom 요청을 승인합니다.
+Approve each Phantom request in this order:
 
 1. `Review dispute`
 2. `Record resolution on-chain`
 3. `Append correction`
 4. `Release bond`
 
-각 단계가 끝나면 UI가 account를 다시 읽고 다음 상태로 이동합니다.
+After each transaction, the UI reloads the on-chain accounts and advances through these states:
 
 ```text
 disputed
@@ -290,36 +290,36 @@ disputed
 → released
 ```
 
-모든 트랜잭션은 `Latest transaction` 링크로 Devnet Explorer에서 확인할 수 있습니다.
+Every transaction can be inspected on Devnet Explorer through the `Latest transaction` link.
 
 ### CLI fallback
 
-Phantom 팝업 문제가 있을 때 동일한 Regulator key로 남은 단계를 실행할 수 있습니다.
+If Phantom has popup or signing issues, use the same regulator key to submit the remaining steps from the CLI:
 
 ```bash
 npm run demo:advance -- all
 ```
 
-완료 후 웹페이지를 새로고침하세요. 이미 완료된 단계는 건너뜁니다.
+Refresh the web page after the command completes. Steps that are already complete are skipped.
 
 ---
 
-## 저장소 관리자: 프로그램 다시 배포하기
+## Maintainers: Redeploy the Program
 
-현재 프로그램은 이미 Devnet에 배포되어 있으므로 일반 사용자는 이 절차가 필요하지 않습니다.
+The program is already deployed on Devnet, so most contributors do not need this procedure.
 
-초기 배포에는 현재 453KB artifact 기준 약 3.16 Devnet SOL의 program-data rent와 seed 비용이 필요합니다. 관리자는 약 5 Devnet SOL을 준비합니다.
+For the current 453 KB artifact, an initial deployment requires approximately 3.16 Devnet SOL for program-data rent plus seed costs. Maintainers should prepare approximately 5 Devnet SOL.
 
 ```bash
 npm run anchor:build
 npm run demo:deploy:devnet
 ```
 
-대형 프로그램은 수백 개의 upload transaction으로 나뉩니다. 스크립트는 `--max-sign-attempts 20`으로 blockhash 만료 시 다시 서명하며, 실패하면 `target/deploy/restoration_bond-upgrade-buffer.json`을 이용해 다음 실행에서 이어서 업로드합니다.
+Large programs are uploaded in hundreds of transactions. The deployment script uses `--max-sign-attempts 20` to re-sign transactions when a blockhash expires. If the command still fails, it preserves `target/deploy/restoration_bond-upgrade-buffer.json` so the next run can resume the upload.
 
-> Fresh clone에는 현재 Program ID를 처음 생성한 program keypair가 포함되지 않습니다. 같은 Program ID의 신규 배포나 upgrade는 기존 authority/keypair를 보유한 관리자만 할 수 있습니다. Fork에서 새 프로그램을 배포하려면 새 program keypair를 만들고 `declare_id!`, `Anchor.toml`, `scripts/demo-common.ts`, IDL의 Program ID를 함께 변경해야 합니다.
+> A fresh clone does not include the original program keypair that created the current Program ID. Only a maintainer holding the existing authority and keypair can redeploy or upgrade that Program ID. To deploy a new program from a fork, generate a new program keypair and update the Program ID in `declare_id!`, `Anchor.toml`, `scripts/demo-common.ts`, and the IDL.
 
-배포 확인:
+Verify the deployment:
 
 ```bash
 solana --keypair .demo-wallets/deployer.json \
@@ -329,9 +329,9 @@ solana --keypair .demo-wallets/deployer.json \
 
 ---
 
-## 개발 및 검증
+## Development and Verification
 
-프론트엔드 검사:
+Run the frontend checks:
 
 ```bash
 npm run typecheck
@@ -339,13 +339,13 @@ npm run lint
 npm run build
 ```
 
-Rust program 테스트:
+Run the Rust program tests:
 
 ```bash
 cargo test --workspace
 ```
 
-SBPF v3 artifact와 IDL 재생성:
+Rebuild the SBPF v3 artifact and IDL:
 
 ```bash
 npm run anchor:build
@@ -353,48 +353,48 @@ npm run anchor:idl
 cp target/idl/restoration_bond.json lib/restoration_bond.json
 ```
 
-현재 Rust 테스트는 다음 release 조건을 검증합니다.
+The current Rust tests verify these release conditions:
 
-- active dispute가 있으면 release 실패
-- outstanding correction이 있으면 release 실패
-- liability revision이 오래됐으면 실패
-- 실제 vault balance가 부족하면 실패
-- 모든 guard가 통과하면 release 성공
+- Release fails while an active dispute exists
+- Release fails while an outstanding correction exists
+- Release fails when the liability revision is stale
+- Release fails when the actual vault balance is insufficient
+- Release succeeds only after every guard passes
 
-## 환경 설정
+## Environment Configuration
 
-CLI script는 다음 변수를 사용합니다.
+The CLI scripts use these variables:
 
 ```bash
 GROUNDTRUTH_RPC_URL=https://api.devnet.solana.com
 GROUNDTRUTH_RPC_PAUSE_MS=2500
 ```
 
-Frontend는 환경 변수가 아니라 seed가 생성하는 `public/demo-config.json`을 읽습니다. 이 파일에는 RPC URL, 공개 account 주소, 역할의 공개키, evidence URI와 hash만 들어가야 합니다.
+The frontend does not read these environment variables. It reads `public/demo-config.json`, which is generated by the seed script. This file should contain only the RPC URL, public account addresses, role public keys, evidence URIs, and hashes.
 
-## 자주 발생하는 문제
+## Troubleshooting
 
 ### `429 Too Many Requests`
 
-공용 Devnet RPC 호출 한도를 초과한 상태입니다. 연속으로 실행하지 말고 몇 분 기다린 다음 RPC가 응답하는지 확인합니다.
+The public Devnet RPC rate limit has been exceeded. Wait a few minutes instead of immediately rerunning the command, then check whether the RPC is responding:
 
 ```bash
 solana balance <YOUR_DEPLOYER_ADDRESS> --url devnet
 ```
 
-응답이 돌아오면 `GROUNDTRUTH_RPC_PAUSE_MS=2500`으로 seed를 다시 실행합니다. 반복적으로 발생하면 Helius 또는 QuickNode 같은 별도 Devnet RPC를 사용하세요.
+Once the RPC responds, rerun the seed with `GROUNDTRUTH_RPC_PAUSE_MS=2500`. If the error continues, use a dedicated Devnet RPC provider such as Helius or QuickNode.
 
 ### `Blockhash expired`
 
-프로그램 upload transaction 수가 blockhash 유효 시간 안에 처리되지 않은 것입니다. `demo:deploy:devnet`은 최대 20회 재서명하도록 설정돼 있습니다. 최종 실패해도 buffer keypair를 삭제하지 말고 같은 명령을 다시 실행합니다.
+The program upload transactions were not processed within the blockhash validity window. `demo:deploy:devnet` is configured for up to 20 re-signing attempts. If it ultimately fails, keep the buffer keypair and run the same command again.
 
-### Phantom에는 SOL이 0으로 보이지만 CLI에는 로컬 SOL이 있음
+### Phantom shows 0 SOL, but the CLI shows a local SOL balance
 
-Phantom은 localhost validator의 SOL 잔액을 표시하지 않습니다. 브라우저 서명 시연은 Devnet을 사용하세요. Localnet SOL과 Devnet SOL은 서로 다른 원장에 존재하며 이동할 수 없습니다.
+Phantom does not display SOL held on a localhost validator. Use Devnet for browser wallet demonstrations. Localnet SOL and Devnet SOL exist on separate ledgers and cannot be transferred between them.
 
-### Phantom에서 `SOL이 충분하지 않습니다`
+### Phantom reports insufficient SOL
 
-Phantom의 Testnet Mode가 `Solana Devnet`인지, 선택 주소가 seed output의 Regulator 주소와 같은지 확인합니다.
+Confirm that Phantom Testnet Mode is set to `Solana Devnet` and that the selected address matches the regulator address printed by the seed command.
 
 ```bash
 solana balance <YOUR_REGULATOR_ADDRESS> --url devnet
@@ -402,7 +402,7 @@ solana balance <YOUR_REGULATOR_ADDRESS> --url devnet
 
 ### `Unhandled Script Error: RSC stream closed`
 
-데모에는 `npm run dev` 대신 아래 production server를 사용합니다.
+Use the production server for the demo instead of `npm run dev`:
 
 ```bash
 npm run build
@@ -411,44 +411,44 @@ npm run start
 
 ### `No default signer found`
 
-프로그램 조회 시 repository의 demo key를 명시합니다.
+Specify the repository's demo key when querying the program:
 
 ```bash
 solana --keypair .demo-wallets/deployer.json program show <PROGRAM_ID> --url devnet
 ```
 
-## 증거 파일
+## Evidence Files
 
-`public/demo-evidence/`의 모든 자료는 합성된 가상 데이터입니다.
+All materials in `public/demo-evidence/` are synthetic demonstration data.
 
-- 복원 전 드론 사진
-- 복원 후 드론 사진
-- 커뮤니티 수질 채취 사진
-- 가상 수질 검사 PDF
-- 식생 분석 CSV
-- 프로젝트 및 evidence metadata JSON
+- Before-restoration drone image
+- After-restoration drone image
+- Community water-sampling image
+- Simulated water-quality report PDF
+- Vegetation analysis CSV
+- Project and evidence metadata JSON
 - `SHA256SUMS.txt`
 
-이미지에는 `SIMULATED DEMO EVIDENCE` 표시가 있으며 과학적·규제적 판단에 사용하면 안 됩니다.
+The images are marked `SIMULATED DEMO EVIDENCE` and must not be used for scientific or regulatory decisions.
 
-## 보안 원칙
+## Security Guidelines
 
-- `.demo-wallets/`, `target/`, `.env*`는 Git에 커밋하지 않습니다.
-- private key, seed phrase, recovery phrase를 README, 이슈, 채팅 또는 발표 화면에 노출하지 않습니다.
-- demo wallet에 실제 Mainnet SOL이나 자산을 보내지 않습니다.
-- `public/demo-config.json`에는 공개 정보만 저장합니다.
-- Devnet token과 demo GTB를 실제 금융 상품으로 표현하지 않습니다.
+- Do not commit `.demo-wallets/`, `target/`, or `.env*` files.
+- Do not expose private keys, seed phrases, or recovery phrases in the README, issues, chat, or presentation screens.
+- Do not send real Mainnet SOL or assets to demo wallets.
+- Store only public information in `public/demo-config.json`.
+- Do not represent Devnet tokens or demo GTB as real financial products.
 
-## 한계와 면책
+## Limitations and Disclaimer
 
-GroundTruth는 승인된 사람의 결정과 증거 hash, 책임 revision, bond workflow를 기록하고 강제합니다. 블록체인이 환경 주장 자체의 과학적 진실성을 판정하지는 않습니다.
+GroundTruth records and enforces authorized decisions, evidence hashes, liability revisions, and the bond workflow. Blockchain technology does not independently determine the scientific truth of environmental claims.
 
-현재 P0 데모는 다음 범위로 제한됩니다.
+The current P0 demo is limited to:
 
-- zero-decimal legacy SPL Token 기반 GTB
-- 한 번의 full release
-- partial release와 slashing 미구현
-- 합성 evidence와 가상 North Ridge 프로젝트
-- Devnet 또는 local development 전용
+- Zero-decimal legacy SPL Token-based GTB
+- A single full release
+- No partial release or slashing implementation
+- Synthetic evidence and a fictional North Ridge project
+- Devnet or local development only
 
-설계 세부 사항은 [`docs/architecture.md`](docs/architecture.md), 발표 흐름은 [`docs/demo-script.md`](docs/demo-script.md)에서 확인할 수 있습니다.
+See [`docs/architecture.md`](docs/architecture.md) for design details and [`docs/demo-script.md`](docs/demo-script.md) for the presentation flow.
