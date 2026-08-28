@@ -16,4 +16,6 @@ The PDA-owned SPL vault is released only when the current liability decision is 
 
 ## Current integration boundary
 
-The frontend is a complete interactive scenario backed by local React state. The next slice replaces that adapter with generated Anchor client calls while preserving the same domain states and view components. Supabase remains an index and file-metadata service; it is never authoritative for release decisions.
+The frontend reads the project and bond accounts directly from the RPC endpoint in `public/demo-config.json`. Phantom supplies the connected Solana public key and signs the three remaining regulator transactions. Anchor sends the signed transaction through the configured connection, then the UI reloads the authoritative accounts and derives the next stage from their counters and bond status.
+
+The checked-in evidence files are synthetic demo artifacts. Their exact-byte SHA-256 hashes and stable URIs are linked from on-chain records. No off-chain database is authoritative for release decisions.

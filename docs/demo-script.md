@@ -11,10 +11,11 @@
 
 ## Presenter preparation
 
-1. Start the local validator, deploy, and seed using the commands in `README.md`.
-2. Run `npm run demo:regulator-key` locally and import the printed demo-only private key into Phantom.
-3. Open the local Vinext URL and connect Phantom. The role chip must display `Regulator`.
-4. Confirm the green sync strip shows an on-chain event sequence and the project begins with one active dispute.
-5. Keep `npm run demo:advance -- all` available as a CLI fallback; it executes the same three regulator instructions.
+1. Confirm `npm run demo:status` reports `cluster: 'devnet'`, one active dispute, and a paused bond.
+2. Run `npm run demo:regulator-key` privately and import the printed demo-only Solana private key into Phantom.
+3. Enable Phantom Testnet Mode, select Solana Devnet, and select the imported `GroundTruth Regulator` account.
+4. Build and start the app, open the printed local URL in Chrome, and connect Phantom. The role chip must display `Regulator`.
+5. Confirm the green sync strip shows an on-chain event sequence and the project begins with one active dispute.
+6. Keep `npm run demo:advance -- all` available as a CLI fallback; it executes the same three regulator instructions on the configured cluster.
 
 Each successful browser action displays a transaction link. On localnet the link uses Explorer's custom-cluster URL; after Devnet deployment it automatically uses `cluster=devnet`.
